@@ -443,6 +443,24 @@ function realizarSorteio() {
         return;
     }
     
+    // Limpar TODAS as seleções visuais antes de realizar o sorteio
+    const animaisGrid = document.getElementById('animaisGrid');
+    const animaisGridMultipla = document.getElementById('animaisGridMultipla');
+    
+    if (animaisGrid) {
+        animaisGrid.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    }
+    if (animaisGridMultipla) {
+        animaisGridMultipla.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    }
+    
+    // Limpar array de seleções múltiplas
+    animaisSelecionados = [];
+    const selecionadosDiv = document.getElementById('selecionados');
+    if (selecionadosDiv) {
+        selecionadosDiv.innerHTML = '';
+    }
+    
     const btnSortear = document.getElementById('btnSortear');
     btnSortear.disabled = true;
     btnSortear.textContent = 'Sorteando...';
@@ -491,6 +509,19 @@ function realizarSorteio() {
                 verificarApostas();
                 btnSortear.disabled = false;
                 btnSortear.textContent = 'Realizar Sorteio';
+                
+                // Garantir que todas as seleções estejam limpas após o sorteio
+                if (animaisGrid) {
+                    animaisGrid.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+                }
+                if (animaisGridMultipla) {
+                    animaisGridMultipla.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+                }
+                animaisSelecionados = [];
+                const selecionadosDivFinal = document.getElementById('selecionados');
+                if (selecionadosDivFinal) {
+                    selecionadosDivFinal.innerHTML = '';
+                }
             }, 300);
         }
     }, 100);
