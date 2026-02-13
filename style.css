@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
 
 * {
     margin: 0;
@@ -7,393 +7,43 @@
 }
 
 :root {
-    /* Cores baseadas no novo design */
-    --background: hsl(150, 10%, 5%);
-    --foreground: hsl(45, 20%, 90%);
-    
-    --card: hsl(150, 8%, 10%);
-    --card-foreground: hsl(45, 20%, 90%);
-    
-    --primary: hsl(45, 90%, 50%);
-    --primary-foreground: hsl(150, 10%, 5%);
-    
-    --secondary: hsl(145, 80%, 42%);
-    --secondary-foreground: hsl(150, 10%, 5%);
-    
-    --muted: hsl(150, 8%, 15%);
-    --muted-foreground: hsl(150, 5%, 55%);
-    
-    --accent: hsl(145, 80%, 42%);
-    --accent-foreground: hsl(150, 10%, 5%);
-    
-    --destructive: hsl(0, 84%, 60%);
-    --destructive-foreground: hsl(210, 40%, 98%);
-    
-    --border: hsl(150, 10%, 18%);
-    --input: hsl(150, 10%, 18%);
-    --ring: hsl(45, 90%, 50%);
-    
-    --radius: 0.75rem;
-    
-    --neon-glow: hsl(145, 80%, 42%);
-    --gold: hsl(45, 90%, 50%);
-    --gold-light: hsl(45, 85%, 65%);
-    
-    /* Variáveis de compatibilidade */
-    --casino-gold: hsl(45, 90%, 50%);
-    --casino-gold-light: hsl(45, 85%, 65%);
-    --casino-red: hsl(0, 84%, 60%);
-    --casino-green: hsl(145, 80%, 42%);
-    --casino-black: hsl(150, 10%, 5%);
-    --casino-black-light: hsl(150, 8%, 10%);
-    --casino-bg: hsl(150, 10%, 5%);
-    --casino-bg-secondary: hsl(150, 8%, 10%);
-    --casino-text: hsl(45, 20%, 90%);
-    --casino-text-muted: hsl(150, 5%, 55%);
-    --casino-border: hsl(150, 10%, 18%);
-    --casino-glow: hsl(145, 80%, 42%);
+    /* Cores de Cassino Clássico */
+    --felt-green: #0d5d2f;
+    --felt-green-dark: #0a4a25;
+    --felt-green-light: #0f6d38;
+    --casino-gold: #D4AF37;
+    --casino-gold-light: #F4E4BC;
+    --casino-gold-dark: #B8941E;
+    --casino-red: #C41E3A;
+    --casino-red-dark: #8B1538;
+    --casino-black: #1a1a1a;
+    --casino-white: #ffffff;
+    --casino-cream: #F5F5DC;
+    --text-gold: #FFD700;
+    --text-white: #ffffff;
+    --text-muted: #cccccc;
+    --border-gold: rgba(212, 175, 55, 0.3);
 }
 
 body {
     font-family: 'Inter', sans-serif;
-    background: var(--background);
+    background: var(--felt-green);
     background-image: 
-        radial-gradient(circle at 20% 30%, hsl(145, 80%, 42%, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, hsl(45, 90%, 50%, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, hsl(145, 80%, 42%, 0.05) 0%, transparent 70%);
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
     min-height: 100vh;
     padding: 0;
-    color: var(--foreground);
+    color: var(--text-white);
     line-height: 1.6;
     position: relative;
     overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 0.05em;
-}
-
-/* Camada de elementos decorativos de cassino */
-.casino-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.25;
-    overflow: hidden;
-}
-
-/* Baralhos decorativos */
-.decorative-card {
-    position: absolute;
-    width: 120px;
-    height: 168px;
-    opacity: 0.7;
-    animation: floatCard 20s ease-in-out infinite;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
-}
-
-.card-1 {
-    top: 10%;
-    left: 5%;
-    animation-delay: 0s;
-    transform: rotate(-15deg);
-}
-
-.card-2 {
-    top: 25%;
-    left: 8%;
-    animation-delay: 3s;
-    transform: rotate(10deg);
-}
-
-.card-3 {
-    top: 15%;
-    right: 6%;
-    animation-delay: 6s;
-    transform: rotate(-20deg);
-}
-
-@keyframes floatCard {
-    0%, 100% {
-        transform: translateY(0) rotate(var(--rotation, 0deg));
-    }
-    25% {
-        transform: translateY(-20px) rotate(calc(var(--rotation, 0deg) + 5deg));
-    }
-    50% {
-        transform: translateY(-10px) rotate(var(--rotation, 0deg));
-    }
-    75% {
-        transform: translateY(-25px) rotate(calc(var(--rotation, 0deg) - 5deg));
-    }
-}
-
-.card-1 { --rotation: -15deg; }
-.card-2 { --rotation: 10deg; }
-.card-3 { --rotation: -20deg; }
-
-/* Dados decorativos */
-.decorative-dice {
-    position: absolute;
-    width: 90px;
-    height: 90px;
-    opacity: 0.7;
-    animation: rollDice 15s ease-in-out infinite;
-    filter: drop-shadow(0 6px 12px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
-}
-
-.dice-1 {
-    top: 60%;
-    left: 12%;
-    animation-delay: 0s;
-}
-
-.dice-2 {
-    top: 70%;
-    right: 10%;
-    animation-delay: 2s;
-}
-
-.dice-3 {
-    bottom: 15%;
-    left: 15%;
-    animation-delay: 4s;
-}
-
-@keyframes rollDice {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    10% {
-        transform: translateY(-15px) rotate(90deg);
-    }
-    20% {
-        transform: translateY(0) rotate(180deg);
-    }
-    30% {
-        transform: translateY(-10px) rotate(270deg);
-    }
-    40% {
-        transform: translateY(0) rotate(360deg);
-    }
-    50% {
-        transform: translateY(-20px) rotate(450deg);
-    }
-    60% {
-        transform: translateY(0) rotate(540deg);
-    }
-    70% {
-        transform: translateY(-12px) rotate(630deg);
-    }
-    80% {
-        transform: translateY(0) rotate(720deg);
-    }
-    90% {
-        transform: translateY(-18px) rotate(810deg);
-    }
-}
-
-/* Máquinas Caça-Níqueis decorativas */
-.decorative-slot {
-    position: absolute;
-    width: 140px;
-    height: 210px;
-    opacity: 0.6;
-    animation: slotMachine 25s ease-in-out infinite;
-    filter: drop-shadow(0 8px 16px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
-}
-
-.slot-1 {
-    top: 40%;
-    left: 3%;
-    animation-delay: 0s;
-}
-
-.slot-2 {
-    top: 50%;
-    right: 4%;
-    animation-delay: 5s;
-}
-
-.slot-3 {
-    bottom: 20%;
-    right: 8%;
-    animation-delay: 10s;
-}
-
-@keyframes slotMachine {
-    0%, 100% {
-        transform: translateY(0) scale(1);
-        opacity: 0.4;
-    }
-    20% {
-        transform: translateY(-30px) scale(1.05);
-        opacity: 0.6;
-    }
-    40% {
-        transform: translateY(-15px) scale(1);
-        opacity: 0.4;
-    }
-    60% {
-        transform: translateY(-35px) scale(1.08);
-        opacity: 0.7;
-    }
-    80% {
-        transform: translateY(-10px) scale(1);
-        opacity: 0.4;
-    }
-}
-
-/* Chips de cassino decorativos */
-.decorative-chip {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    opacity: 0.7;
-    animation: spinChip 12s linear infinite;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
-}
-
-.chip-1 {
-    top: 30%;
-    left: 20%;
-    animation-delay: 0s;
-}
-
-.chip-2 {
-    top: 65%;
-    left: 25%;
-    animation-delay: 2s;
-}
-
-.chip-3 {
-    bottom: 25%;
-    right: 20%;
-    animation-delay: 4s;
-}
-
-@keyframes spinChip {
-    0% {
-        transform: rotate(0deg) translateY(0);
-    }
-    25% {
-        transform: rotate(90deg) translateY(-20px);
-    }
-    50% {
-        transform: rotate(180deg) translateY(0);
-    }
-    75% {
-        transform: rotate(270deg) translateY(-15px);
-    }
-    100% {
-        transform: rotate(360deg) translateY(0);
-    }
-}
-
-/* Efeito de brilho pulsante nas máquinas */
-.slot-1 svg,
-.slot-2 svg,
-.slot-3 svg {
-    animation: slotGlow 3s ease-in-out infinite;
-}
-
-@keyframes slotGlow {
-    0%, 100% {
-        filter: drop-shadow(0 8px 16px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
-    }
-    50% {
-        filter: drop-shadow(0 8px 16px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 25px rgba(255, 215, 0, 0.7));
-    }
-}
-
-/* Efeito de brilho adicional nos elementos */
-.decorative-card svg,
-.decorative-dice svg,
-.decorative-chip svg {
-    animation: elementGlow 4s ease-in-out infinite;
-}
-
-@keyframes elementGlow {
-    0%, 100% {
-        filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
-    }
-    50% {
-        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
-    }
-}
-
-/* Responsividade para elementos decorativos */
-@media (max-width: 1024px) {
-    .casino-background {
-        opacity: 0.18;
-    }
-    
-    .decorative-card {
-        width: 100px;
-        height: 140px;
-    }
-    
-    .decorative-dice {
-        width: 75px;
-        height: 75px;
-    }
-    
-    .decorative-slot {
-        width: 120px;
-        height: 180px;
-    }
-    
-    .decorative-chip {
-        width: 85px;
-        height: 85px;
-    }
-}
-
-@media (max-width: 768px) {
-    .casino-background {
-        opacity: 0.12;
-    }
-    
-    .decorative-card {
-        width: 80px;
-        height: 112px;
-    }
-    
-    .decorative-dice {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .decorative-slot {
-        width: 100px;
-        height: 150px;
-    }
-    
-    .decorative-chip {
-        width: 70px;
-        height: 70px;
-    }
-}
-
-/* Efeito de textura de felt */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 4px),
-        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 4px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.3;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: var(--casino-gold);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .container {
@@ -404,17 +54,16 @@ body::before {
     z-index: 2;
 }
 
-/* Header Estilo Moderno */
+/* Header Estilo Cassino */
 .header-modern {
-    background: linear-gradient(135deg, var(--card) 0%, var(--background) 100%);
-    border: 2px solid hsl(var(--border));
-    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--felt-green-dark) 0%, var(--felt-green) 100%);
+    border: 4px solid var(--casino-gold);
+    border-radius: 12px;
     padding: 2rem 3rem;
     margin-bottom: 2rem;
     box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 40px hsl(var(--neon-glow) / 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -423,16 +72,11 @@ body::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-    animation: headerShine 3s infinite;
-}
-
-@keyframes headerShine {
-    0% { left: -100%; }
-    100% { left: 100%; }
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--casino-gold);
+    opacity: 0.6;
 }
 
 .header-content {
@@ -446,24 +90,16 @@ body::before {
 }
 
 .logo-section h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3rem;
-    font-weight: 400;
-    color: hsl(var(--primary));
+    font-size: 3.5rem;
     margin-bottom: 0.5rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    text-shadow: 0 0 10px hsl(var(--gold) / 0.5), 0 0 30px hsl(var(--gold) / 0.2);
-}
-
-@keyframes textGlow {
-    0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); }
-    50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)); }
+    color: var(--casino-gold);
 }
 
 .logo-section .subtitle {
     font-size: 0.875rem;
-    color: var(--casino-text-muted);
+    color: var(--text-muted);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.2em;
@@ -479,55 +115,44 @@ body::before {
     flex-direction: column;
     align-items: flex-end;
     gap: 0.5rem;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%);
-    padding: 1rem 1.5rem;
-    border-radius: 1rem;
-    border: 2px solid var(--casino-border);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    background: var(--casino-black);
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    border: 3px solid var(--casino-gold);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .saldo-label {
     font-size: 0.75rem;
-    color: var(--casino-text-muted);
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: 600;
 }
 
 .saldo-valor {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 900;
     color: var(--casino-gold);
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Playfair Display', serif;
     letter-spacing: 0.05em;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-    animation: saldoPulse 2s ease-in-out infinite;
 }
 
-@keyframes saldoPulse {
-    0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
-    50% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.9); }
+.saldo-baixo {
+    color: var(--casino-red) !important;
 }
 
-.saldo-valor.saldo-baixo {
-    color: var(--casino-red);
-    text-shadow: 0 0 20px rgba(220, 20, 60, 0.6);
-    animation: saldoPulse 1s ease-in-out infinite;
-}
-
-/* Sections */
+/* Seções */
 section {
-    background: linear-gradient(135deg, var(--casino-bg-secondary) 0%, var(--casino-black-light) 100%);
-    border: 2px solid var(--casino-border);
-    border-radius: 1.5rem;
+    background: var(--felt-green-dark);
+    border: 3px solid var(--casino-gold);
+    border-radius: 12px;
     padding: 2.5rem;
     margin-bottom: 2rem;
     box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(255, 215, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
-    overflow: hidden;
 }
 
 section::before {
@@ -537,14 +162,8 @@ section::before {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, transparent, var(--casino-gold), transparent);
-    opacity: 0.5;
-    animation: borderGlow 2s ease-in-out infinite;
-}
-
-@keyframes borderGlow {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
+    background: var(--casino-gold);
+    opacity: 0.6;
 }
 
 .section-header {
@@ -554,19 +173,14 @@ section::before {
 }
 
 section h2 {
-    font-family: 'Bebas Neue', sans-serif;
     font-size: 2.5rem;
-    font-weight: 400;
-    color: hsl(var(--primary));
     margin-bottom: 0.5rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px hsl(var(--gold) / 0.5), 0 0 30px hsl(var(--gold) / 0.2);
+    letter-spacing: 0.1em;
 }
 
 .section-subtitle {
     font-size: 0.875rem;
-    color: var(--casino-text-muted);
+    color: var(--text-muted);
     font-weight: 400;
     letter-spacing: 0.05em;
 }
@@ -596,30 +210,20 @@ section h2 {
     width: 100%;
     padding: 1rem 1.25rem;
     background: var(--casino-black);
-    border: 2px solid var(--casino-border);
-    border-radius: 0.75rem;
+    border: 2px solid var(--casino-gold);
+    border-radius: 8px;
     font-size: 1rem;
-    color: var(--casino-text);
-    transition: all 0.3s ease;
+    color: var(--text-white);
+    transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.tipo-aposta select option {
-    background: var(--casino-black);
-    color: var(--casino-text);
 }
 
 .tipo-aposta select:focus,
 .valor-aposta input:focus,
 .colocacao select:focus {
     outline: none;
-    border-color: var(--casino-gold);
-    box-shadow: 
-        0 0 0 3px rgba(255, 215, 0, 0.2),
-        0 0 20px rgba(255, 215, 0, 0.3),
-        inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    background: var(--casino-black-light);
+    border-color: var(--casino-gold-light);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
 .valor-aposta input {
@@ -627,11 +231,10 @@ section h2 {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--casino-gold);
-    font-family: 'Orbitron', sans-serif;
     letter-spacing: 0.1em;
 }
 
-/* Grid de Animais - Estilo Chips de Cassino */
+/* Grid de Animais - Estilo Cartas de Cassino */
 .animais-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -640,67 +243,28 @@ section h2 {
 }
 
 .animal-card {
-    background: hsl(var(--card));
+    background: var(--casino-cream);
     padding: 1.5rem;
-    border-radius: var(--radius);
+    border-radius: 8px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid hsl(var(--border));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 3px solid var(--casino-gold);
     position: relative;
-    overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.animal-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.4s;
-}
-
 .animal-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-color: hsl(var(--secondary) / 0.5);
-    box-shadow: 
-        0 0 20px hsl(var(--neon-glow) / 0.4),
-        0 20px 40px rgba(0, 0, 0, 0.5);
-    background: hsl(var(--muted));
-}
-
-.animal-card:hover::before {
-    opacity: 1;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
 .animal-card.selecionado {
-    background: hsl(var(--primary) / 0.15);
-    color: hsl(var(--primary));
-    border-color: hsl(var(--primary) / 0.5);
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 
-        0 0 8px hsl(var(--gold) / 0.3),
-        inset 0 0 8px hsl(var(--gold) / 0.1),
-        0 20px 40px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes selectedPulse {
-    0%, 100% { 
-        box-shadow: 
-            0 15px 40px rgba(255, 215, 0, 0.6),
-            0 0 50px rgba(255, 215, 0, 0.5),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-    50% { 
-        box-shadow: 
-            0 20px 50px rgba(255, 215, 0, 0.8),
-            0 0 70px rgba(255, 215, 0, 0.7),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
+    background: var(--casino-gold);
+    color: var(--casino-black);
+    border-color: var(--casino-gold-light);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
 }
 
 .animal-card.selecionado::after {
@@ -710,7 +274,7 @@ section h2 {
     right: 0.5rem;
     width: 2rem;
     height: 2rem;
-    background: var(--casino-green);
+    background: var(--casino-red);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -718,38 +282,22 @@ section h2 {
     font-weight: bold;
     color: white;
     font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(0, 170, 0, 0.5);
-    animation: checkmark 0.5s ease-out;
-}
-
-@keyframes checkmark {
-    0% { transform: scale(0) rotate(0deg); }
-    50% { transform: scale(1.3) rotate(180deg); }
-    100% { transform: scale(1) rotate(360deg); }
+    box-shadow: 0 4px 15px rgba(196, 30, 58, 0.5);
 }
 
 .animal-emoji {
     font-size: 3rem;
     margin-bottom: 0.75rem;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s ease;
-}
-
-.animal-card:hover .animal-emoji {
-    transform: scale(1.15) rotate(5deg);
-    filter: drop-shadow(0 6px 12px rgba(255, 215, 0, 0.4));
-}
-
-.animal-card.selecionado .animal-emoji {
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .animal-nome {
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: 1rem;
+    color: var(--casino-black);
     margin-bottom: 0.5rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
 }
 
 .animal-card.selecionado .animal-nome {
@@ -761,61 +309,11 @@ section h2 {
     font-size: 0.75rem;
     opacity: 0.9;
     font-weight: 600;
-    color: var(--casino-text-muted);
+    color: var(--casino-black);
     letter-spacing: 0.05em;
 }
 
-.animal-card.selecionado .animal-numeros {
-    color: var(--casino-black);
-    opacity: 0.8;
-}
-
 /* Input de Número */
-/* Campo para múltiplas dezenas */
-.multipla-dezena {
-    margin-bottom: 1.5rem;
-}
-
-.multipla-dezena label {
-    display: block;
-    margin-bottom: 0.75rem;
-    font-weight: 600;
-    color: hsl(var(--primary));
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-.multipla-dezena input {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    background: hsl(var(--card));
-    border: 2px solid hsl(var(--border));
-    border-radius: var(--radius);
-    font-size: 1rem;
-    color: hsl(var(--foreground));
-    transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.multipla-dezena input:focus {
-    outline: none;
-    border-color: hsl(var(--primary) / 0.5);
-    box-shadow: 
-        0 0 0 3px hsl(var(--primary) / 0.2),
-        0 0 20px hsl(var(--primary) / 0.3),
-        inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    background: hsl(var(--muted));
-}
-
-.multipla-dezena .help-text {
-    margin-top: 0.5rem;
-    font-size: 0.75rem;
-    color: hsl(var(--muted-foreground));
-    font-style: italic;
-}
-
 .numero-input {
     margin-bottom: 1.5rem;
 }
@@ -834,33 +332,61 @@ section h2 {
     width: 100%;
     padding: 1.5rem;
     background: var(--casino-black);
-    border: 2px solid var(--casino-border);
-    border-radius: 1rem;
+    border: 3px solid var(--casino-gold);
+    border-radius: 8px;
     font-size: 2rem;
     text-align: center;
     letter-spacing: 0.3em;
     color: var(--casino-gold);
     font-weight: 900;
-    transition: all 0.3s ease;
-    font-family: 'Orbitron', sans-serif;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    font-family: 'Playfair Display', serif;
 }
 
 .numero-input input:focus {
     outline: none;
-    border-color: var(--casino-gold);
-    box-shadow: 
-        0 0 0 3px rgba(255, 215, 0, 0.2),
-        0 0 30px rgba(255, 215, 0, 0.4),
-        inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    background: var(--casino-black-light);
-    transform: scale(1.02);
+    border-color: var(--casino-gold-light);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
-.numero-input input::placeholder {
-    color: var(--casino-text-muted);
+/* Campo para múltiplas dezenas */
+.multipla-dezena {
+    margin-bottom: 1.5rem;
+}
+
+.multipla-dezena label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--casino-gold);
     font-size: 0.875rem;
-    letter-spacing: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.multipla-dezena input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: var(--casino-black);
+    border: 2px solid var(--casino-gold);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-white);
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.multipla-dezena input:focus {
+    outline: none;
+    border-color: var(--casino-gold-light);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.multipla-dezena .help-text {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
 }
 
 /* Seleção Múltipla */
@@ -876,90 +402,62 @@ section h2 {
 .selecionados {
     margin-top: 1.5rem;
     padding: 1.25rem;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%);
-    border-radius: 1rem;
+    background: var(--casino-black);
+    border-radius: 8px;
     font-size: 0.875rem;
-    border: 2px solid var(--casino-border);
+    border: 2px solid var(--casino-gold);
     color: var(--casino-gold);
     font-weight: 600;
     text-align: center;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Botões Estilo Cassino */
 .btn-apostar,
 .btn-sortear {
     width: 100%;
-    padding: 1.25rem 2rem;
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    padding: 1.5rem 2.5rem;
+    background: var(--casino-gold);
+    color: var(--casino-black);
     border: none;
-    border-radius: var(--radius);
-    font-size: 1.125rem;
-    font-weight: 600;
+    border-radius: 8px;
+    font-size: 1.25rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
+    transition: all 0.2s ease;
+    margin-top: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Playfair Display', serif;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: 
-        0 0 8px hsl(var(--gold) / 0.3),
-        inset 0 0 8px hsl(var(--gold) / 0.1);
+    letter-spacing: 0.1em;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
 }
 
-.btn-apostar::before,
-.btn-sortear::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s;
-}
-
-.btn-apostar:hover::before,
-.btn-sortear:hover::before {
-    left: 100%;
-}
-
 .btn-apostar:hover,
 .btn-sortear:hover {
-    transform: translateY(-3px);
-    box-shadow: 
-        0 0 20px hsl(var(--gold) / 0.5),
-        0 20px 40px rgba(0, 0, 0, 0.5);
-    background: hsl(var(--gold-light));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    background: var(--casino-gold-light);
 }
 
 .btn-apostar:active,
 .btn-sortear:active {
-    transform: translateY(-1px);
+    transform: translateY(0);
 }
 
 .btn-sortear {
-    background: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
-    box-shadow: 
-        0 0 8px hsl(var(--neon-glow) / 0.4),
-        inset 0 0 8px hsl(var(--neon-glow) / 0.1);
+    background: var(--casino-red);
+    color: var(--text-white);
     margin-bottom: 2rem;
 }
 
 .btn-sortear:hover {
-    box-shadow: 
-        0 12px 35px rgba(0, 170, 0, 0.6),
-        0 0 40px rgba(0, 170, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    background: linear-gradient(135deg, #00cc00 0%, var(--casino-green) 100%);
+    background: var(--casino-red-dark);
 }
 
 .btn-sortear:disabled {
@@ -976,19 +474,23 @@ section h2 {
 }
 
 .premio-item {
-    background: linear-gradient(135deg, var(--casino-black) 0%, var(--casino-black-light) 100%);
+    background: var(--casino-black);
     padding: 1.75rem;
-    border-radius: 1rem;
+    border-radius: 8px;
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
     align-items: center;
     justify-content: space-between;
-    border: 2px solid var(--casino-border);
-    transition: all 0.3s ease;
+    border: 3px solid var(--casino-gold);
+    transition: all 0.2s ease;
     position: relative;
-    overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.premio-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .premio-item::before {
@@ -999,85 +501,33 @@ section h2 {
     width: 4px;
     height: 100%;
     background: var(--casino-gold);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
-}
-
-.premio-item:hover {
-    transform: translateX(4px);
-    border-color: var(--casino-gold);
-    box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(255, 215, 0, 0.3);
-}
-
-.premio-item:hover::before {
-    transform: scaleY(1);
-}
-
-.premio-item.premio-ganhou {
-    background: linear-gradient(135deg, rgba(0, 170, 0, 0.2) 0%, rgba(0, 170, 0, 0.1) 100%);
-    border-color: var(--casino-green);
-    animation: premioEntrada 0.6s ease-out backwards, winPulse 2s ease-in-out infinite;
-}
-
-.premio-item.premio-ganhou::before {
-    background: var(--casino-green);
-    transform: scaleY(1);
-}
-
-@keyframes premioEntrada {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes winPulse {
-    0%, 100% { 
-        box-shadow: 0 0 0 0 rgba(0, 170, 0, 0.6);
-    }
-    50% { 
-        box-shadow: 0 0 0 10px rgba(0, 170, 0, 0);
-    }
 }
 
 .premio-posicao {
     font-weight: 700;
-    font-size: 0.875rem;
-    color: var(--casino-text-muted);
+    color: var(--casino-gold);
+    font-size: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.1em;
 }
 
 .premio-numero {
     font-size: 2rem;
     font-weight: 900;
     color: var(--casino-gold);
+    font-family: 'Playfair Display', serif;
     letter-spacing: 0.2em;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
 }
 
 .premio-dezena,
 .premio-centena {
-    padding: 0.5rem 1rem;
-    background: var(--casino-black-light);
-    border-radius: 0.5rem;
-    font-weight: 700;
-    color: var(--casino-gold);
-    border: 1px solid var(--casino-border);
     font-size: 0.875rem;
-    font-family: 'Orbitron', sans-serif;
+    color: var(--text-muted);
+    text-transform: uppercase;
 }
 
 .premio-badge {
-    background: linear-gradient(135deg, var(--casino-green) 0%, var(--casino-green-dark) 100%);
+    background: var(--casino-red);
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 9999px;
@@ -1085,14 +535,7 @@ section h2 {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-family: 'Orbitron', sans-serif;
-    box-shadow: 0 4px 15px rgba(0, 170, 0, 0.5);
-    animation: badgeBounce 1s ease-in-out infinite;
-}
-
-@keyframes badgeBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+    box-shadow: 0 4px 15px rgba(196, 30, 58, 0.5);
 }
 
 .animais-resultado {
@@ -1103,33 +546,29 @@ section h2 {
 }
 
 .animal-resultado-item {
-    background: linear-gradient(135deg, var(--casino-black) 0%, var(--casino-black-light) 100%);
-    color: var(--casino-gold);
+    background: var(--casino-cream);
+    color: var(--casino-black);
     padding: 1.25rem;
-    border-radius: 1rem;
+    border-radius: 8px;
     text-align: center;
     font-weight: 700;
     font-size: 0.875rem;
-    border: 2px solid var(--casino-border);
-    transition: all 0.3s ease;
+    border: 3px solid var(--casino-gold);
+    transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-family: 'Orbitron', sans-serif;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .animal-resultado-item:hover {
     transform: scale(1.05);
-    border-color: var(--casino-gold);
-    box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Histórico */
 .sem-apostas {
     text-align: center;
-    color: var(--casino-text-muted);
+    color: var(--text-muted);
     padding: 3rem;
     font-style: italic;
     font-size: 1rem;
@@ -1142,78 +581,35 @@ section h2 {
 
 .aposta-item {
     padding: 1.75rem;
-    border-radius: 1rem;
-    border-left: 4px solid var(--casino-border);
-    transition: all 0.3s ease;
+    border-radius: 8px;
+    border-left: 5px solid var(--casino-gold);
+    transition: all 0.2s ease;
     position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--casino-black) 0%, var(--casino-black-light) 100%);
-    border: 2px solid var(--casino-border);
+    background: var(--casino-black);
+    border: 3px solid var(--casino-gold);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.aposta-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--casino-gold);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
+.aposta-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .aposta-item.pendente {
     border-left-color: var(--casino-gold);
 }
 
-.aposta-item.pendente::before {
-    background: var(--casino-gold);
-    transform: scaleY(1);
-}
-
 .aposta-item.ganhou {
-    background: linear-gradient(135deg, rgba(0, 170, 0, 0.2) 0%, rgba(0, 170, 0, 0.1) 100%);
-    border-left-color: var(--casino-green);
-    border-color: var(--casino-green);
-    animation: slideIn 0.5s ease-out, winGlow 2s ease-in-out infinite;
-}
-
-.aposta-item.ganhou::before {
-    background: var(--casino-green);
-    transform: scaleY(1);
-}
-
-.aposta-item.perdeu {
-    background: linear-gradient(135deg, rgba(220, 20, 60, 0.2) 0%, rgba(220, 20, 60, 0.1) 100%);
+    background: rgba(0, 170, 0, 0.1);
     border-left-color: var(--casino-red);
     border-color: var(--casino-red);
 }
 
-.aposta-item.perdeu::before {
-    background: var(--casino-red);
-    transform: scaleY(1);
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
-}
-
-@keyframes winGlow {
-    0%, 100% { 
-        box-shadow: 0 0 0 0 rgba(0, 170, 0, 0.6);
-    }
-    50% { 
-        box-shadow: 0 0 0 10px rgba(0, 170, 0, 0);
-    }
+.aposta-item.perdeu {
+    background: rgba(196, 30, 58, 0.1);
+    border-left-color: var(--text-muted);
+    border-color: var(--text-muted);
+    opacity: 0.7;
 }
 
 .aposta-info {
@@ -1221,99 +617,43 @@ section h2 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-    gap: 0.75rem;
 }
 
 .aposta-info strong {
-    font-size: 1.125rem;
-    color: var(--casino-text);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    color: var(--casino-gold);
+    font-size: 1rem;
 }
 
 .aposta-valor {
-    font-size: 1.25rem;
-    font-weight: 900;
     color: var(--casino-gold);
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    font-weight: 700;
+    font-size: 1.125rem;
 }
 
 .aposta-detalhes {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
     font-size: 0.875rem;
-    color: var(--casino-text-muted);
-    font-weight: 500;
+    color: var(--text-muted);
 }
 
 .aposta-status {
     font-weight: 700;
-    font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-family: 'Orbitron', sans-serif;
 }
 
 .aposta-item.ganhou .aposta-status {
-    color: var(--casino-green);
-    text-shadow: 0 0 10px rgba(0, 170, 0, 0.5);
+    color: var(--casino-red);
 }
 
 .aposta-item.perdeu .aposta-status {
-    color: var(--casino-red);
-    text-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+    color: var(--text-muted);
 }
 
 .aposta-item.pendente .aposta-status {
     color: var(--casino-gold);
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-/* Animações de Notificação */
-@keyframes slideInRight {
-    from {
-        transform: translateX(400px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOutRight {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(400px);
-        opacity: 0;
-    }
-}
-
-@keyframes confeteFall {
-    to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-.sorteio-animacao {
-    text-align: center;
-    padding: 3rem;
-    font-size: 1.75rem;
-    font-weight: 900;
-    color: var(--casino-gold);
-    animation: pulse 1s ease-in-out infinite;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
 }
 
 /* Responsividade */
@@ -1326,25 +666,12 @@ section h2 {
         padding: 1.5rem;
     }
     
-    .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .saldo-info {
-        align-items: flex-start;
-    }
-    
     .logo-section h1 {
-        font-size: 1.75rem;
+        font-size: 2.5rem;
     }
     
     section {
         padding: 1.5rem;
-    }
-    
-    section h2 {
-        font-size: 1.5rem;
     }
     
     .animais-grid {
@@ -1352,20 +679,12 @@ section h2 {
         gap: 0.75rem;
     }
     
-    .premio-item {
-        flex-direction: column;
-        text-align: center;
-        padding: 1.25rem;
+    .animal-card {
+        padding: 1rem;
     }
-    
-    .aposta-info {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .btn-apostar,
-    .btn-sortear {
-        font-size: 1rem;
-        padding: 1rem 1.5rem;
-    }
+}
+
+/* Remover elementos decorativos pesados */
+.casino-background {
+    display: none;
 }

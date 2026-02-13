@@ -168,8 +168,11 @@ function selecionarAnimal(animalId, card) {
     
     if (tipoAposta !== 'grupo') return;
     
-    // Remove seleção anterior
-    document.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    // Remove seleção anterior APENAS do grid de aposta simples
+    const animaisGrid = document.getElementById('animaisGrid');
+    if (animaisGrid) {
+        animaisGrid.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    }
     
     // Adiciona nova seleção
     card.classList.add('selecionado');
@@ -232,15 +235,31 @@ function atualizarInterface() {
     const helpDezenas = document.getElementById('helpDezenas');
     const dezenasAposta = document.getElementById('dezenasAposta');
     
-    // Reset seleções
+    // Reset seleções completamente
     animaisSelecionados = [];
-    document.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    
+    // Limpar seleções de AMBOS os grids
+    const animaisGridMultipla = document.getElementById('animaisGridMultipla');
+    
+    if (animaisGrid) {
+        animaisGrid.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    }
+    if (animaisGridMultipla) {
+        animaisGridMultipla.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    }
+    
     const selecionadosDiv = document.getElementById('selecionados');
     if (selecionadosDiv) {
         selecionadosDiv.innerHTML = '';
     }
     if (dezenasAposta) {
         dezenasAposta.value = '';
+    }
+    
+    // Limpar campo de número também
+    const numeroAposta = document.getElementById('numeroAposta');
+    if (numeroAposta) {
+        numeroAposta.value = '';
     }
     
     // Esconder todos os campos
@@ -292,19 +311,26 @@ function fazerAposta() {
         tipo: tipoAposta,
         valor: valor,
         colocacao: colocacao,
-        ganhou: false,
-        pago: false
+        ganhou: null, // null = não verificado ainda, false = verificou e perdeu, true = verificou e ganhou
+        pago: false,
+        verificada: false // Flag para indicar se já foi verificada
     };
     
     // Validar e processar aposta baseada no tipo
     if (tipoAposta === 'grupo') {
-        const cardSelecionado = document.querySelector('.animal-card.selecionado');
+        // Buscar card selecionado APENAS no grid de aposta simples (não no grid múltipla)
+        const animaisGrid = document.getElementById('animaisGrid');
+        const cardSelecionado = animaisGrid.querySelector('.animal-card.selecionado');
         if (!cardSelecionado) {
             mostrarNotificacao('Selecione um animal!', 'warning');
             return;
         }
         const animalId = parseInt(cardSelecionado.dataset.animalId);
         const grupo = gruposAnimais.find(g => g.id === animalId);
+        if (!grupo) {
+            mostrarNotificacao('Animal não encontrado!', 'error');
+            return;
+        }
         aposta.animal = grupo.nome;
         aposta.animalId = animalId;
     } else if (tipoAposta === 'dezena' || tipoAposta === 'centena' || tipoAposta === 'milhar') {
@@ -378,16 +404,35 @@ function fazerAposta() {
         btnApostar.style.transform = '';
     }, 200);
     
-    // Limpar formulário
+    // Limpar formulário completamente
     document.getElementById('valorAposta').value = 10;
-    if (tipoAposta === 'grupo') {
-        document.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
-    } else if (tipoAposta === 'dezena' || tipoAposta === 'centena' || tipoAposta === 'milhar') {
+    
+    // Limpar TODOS os cards selecionados de ambos os grids
+    const animaisGrid = document.getElementById('animaisGrid');
+    const animaisGridMultipla = document.getElementById('animaisGridMultipla');
+    
+    if (animaisGrid) {
+        animaisGrid.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    }
+    if (animaisGridMultipla) {
+        animaisGridMultipla.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
+    }
+    
+    // Limpar campos específicos
+    if (tipoAposta === 'dezena' || tipoAposta === 'centena' || tipoAposta === 'milhar') {
         document.getElementById('numeroAposta').value = '';
-    } else {
-        animaisSelecionados = [];
-        document.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
-        document.getElementById('selecionados').innerHTML = '';
+    } else if (tipoAposta === 'duqueDezena' || tipoAposta === 'ternoDezena') {
+        const dezenasInput = document.getElementById('dezenasAposta');
+        if (dezenasInput) {
+            dezenasInput.value = '';
+        }
+    }
+    
+    // Limpar seleções múltiplas
+    animaisSelecionados = [];
+    const selecionadosDiv = document.getElementById('selecionados');
+    if (selecionadosDiv) {
+        selecionadosDiv.innerHTML = '';
     }
 }
 
@@ -472,7 +517,11 @@ function exibirResultados() {
             const premiosParaVerificar = obterPremiosParaVerificar(aposta.colocacao);
             if (premiosParaVerificar.includes(premio)) {
                 if (aposta.tipo === 'grupo' && aposta.animalId === grupo.id) return true;
-                if (aposta.tipo === 'dezena' && aposta.numero === dezena) return true;
+                // Garantir que ambos estejam formatados com 2 dígitos para comparação
+                if (aposta.tipo === 'dezena') {
+                    const numeroFormatado = formatarNumero(parseInt(aposta.numero) || 0, 2);
+                    if (numeroFormatado === dezena) return true;
+                }
                 if (aposta.tipo === 'centena' && aposta.numero === centena) return true;
                 if (aposta.tipo === 'milhar' && aposta.numero === premioFormatado) return true;
             }
@@ -510,7 +559,8 @@ function verificarApostas() {
     let totalGanho = 0;
     
     apostas.forEach(aposta => {
-        if (aposta.ganhou || aposta.pago) return;
+        // Pular apostas já verificadas e pagas
+        if (aposta.verificada && aposta.pago) return;
         
         let ganhou = false;
         const premiosParaVerificar = obterPremiosParaVerificar(aposta.colocacao);
@@ -533,6 +583,9 @@ function verificarApostas() {
             ganhou = verificarTernoDezena(aposta.dezenas, resultadoSorteio);
         }
         
+        // Marcar que a aposta foi verificada
+        aposta.verificada = true;
+        
         if (ganhou) {
             aposta.ganhou = true;
             const multiplicador = obterMultiplicador(aposta.tipo, aposta.colocacao);
@@ -541,7 +594,7 @@ function verificarApostas() {
             aposta.ganho = ganho;
             aposta.pago = true;
         } else {
-            // Marcar explicitamente como não ganhou
+            // Marcar explicitamente como não ganhou (após verificação)
             aposta.ganhou = false;
             aposta.ganho = 0;
             aposta.pago = false;
@@ -671,26 +724,45 @@ function verificarGrupo(animalId, premios) {
 
 // Verificar dezena
 function verificarDezena(numero, premios) {
-    const num = parseInt(numero);
+    // Garantir que o número da aposta está formatado com 2 dígitos
+    const numeroFormatado = formatarNumero(parseInt(numero) || 0, 2);
+    
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
         const premioFormatado = formatarNumero(premio, 4);
-        const dezena = parseInt(premioFormatado.slice(-2));
-        if (dezena === num || (num === 0 && dezena === 0)) {
+        // Pegar os últimos 2 dígitos do prêmio (a dezena)
+        const dezenaPremio = premioFormatado.slice(-2);
+        
+        // Comparar strings formatadas (mais seguro que comparar números)
+        if (dezenaPremio === numeroFormatado) {
             return true;
         }
     }
     return false;
 }
 
-// Verificar centena (deve acertar os últimos 3 dígitos)
+// Verificar centena (deve acertar os últimos 3 dígitos do número sorteado)
+// Exemplo: Se o prêmio é 1234, a centena é 234
+// Se apostar 234 e o prêmio for 1234, ganha
+// Se apostar 234 e o prêmio for 5234, ganha (últimos 3 dígitos são 234)
 function verificarCentena(numero, premios) {
-    // Garantir que o número da aposta tem 3 dígitos
-    const numeroFormatado = formatarNumero(parseInt(numero), 3);
+    // Garantir que o número da aposta tem exatamente 3 dígitos
+    // Ex: "123" -> "123", "12" -> "012", "1" -> "001"
+    const numeroFormatado = formatarNumero(parseInt(numero) || 0, 3);
     
+    // Verificar em cada prêmio se os últimos 3 dígitos coincidem
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
+        // Formatar prêmio com 4 dígitos (ex: 1234 -> "1234", 56 -> "0056")
         const premioFormatado = formatarNumero(premio, 4);
-        const centena = premioFormatado.slice(-3); // Últimos 3 dígitos
-        if (centena === numeroFormatado) {
+        
+        // Pegar os últimos 3 dígitos do prêmio (ex: "1234" -> "234", "0056" -> "056")
+        const centenaPremio = premioFormatado.slice(-3);
+        
+        // Comparar os 3 dígitos exatamente
+        if (centenaPremio === numeroFormatado) {
             return true;
         }
     }
@@ -786,7 +858,10 @@ function atualizarHistorico() {
     
     let html = '<div class="apostas-lista">';
     
-    apostas.slice().reverse().forEach(aposta => {
+    // Ordenar por ID (maior = mais recente) para ter a mais recente no topo
+    const apostasOrdenadas = [...apostas].sort((a, b) => b.id - a.id);
+    
+    apostasOrdenadas.forEach(aposta => {
         let descricao = '';
         
         if (aposta.tipo === 'grupo') {
@@ -810,8 +885,8 @@ function atualizarHistorico() {
         // Verificar corretamente o status da aposta
         let statusClass, statusText;
         
-        // Se o sorteio ainda não foi realizado
-        if (!resultadoSorteio) {
+        // Se o sorteio ainda não foi realizado OU a aposta ainda não foi verificada
+        if (!resultadoSorteio || !aposta.verificada) {
             statusClass = 'pendente';
             statusText = 'Pendente';
         }
@@ -820,12 +895,12 @@ function atualizarHistorico() {
             statusClass = 'ganhou';
             statusText = `Ganhou R$ ${aposta.ganho.toFixed(2)}`;
         }
-        // Se o sorteio foi realizado mas a aposta não ganhou
-        else if (resultadoSorteio && aposta.ganhou === false) {
+        // Se o sorteio foi realizado, a aposta foi verificada e não ganhou
+        else if (resultadoSorteio && aposta.verificada && aposta.ganhou === false) {
             statusClass = 'perdeu';
             statusText = 'Perdeu';
         }
-        // Caso padrão (não deveria acontecer, mas por segurança)
+        // Caso padrão (por segurança, mantém como pendente)
         else {
             statusClass = 'pendente';
             statusText = 'Pendente';
