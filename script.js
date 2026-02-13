@@ -438,7 +438,11 @@ function fazerAposta() {
 
 // Realizar sorteio
 function realizarSorteio() {
-    if (apostas.length === 0) {
+    // Verificar se há apostas pendentes (não verificadas ainda)
+    // Uma aposta está pendente se ainda não foi verificada
+    const apostasPendentes = apostas.filter(aposta => !aposta.verificada);
+    
+    if (apostas.length === 0 || apostasPendentes.length === 0) {
         mostrarNotificacao('Faça pelo menos uma aposta antes de sortear!', 'warning');
         return;
     }
