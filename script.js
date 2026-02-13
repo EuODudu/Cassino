@@ -516,7 +516,8 @@ function exibirResultados() {
             if (aposta.ganhou || aposta.pago) return false;
             const premiosParaVerificar = obterPremiosParaVerificar(aposta.colocacao);
             if (premiosParaVerificar.includes(premio)) {
-                if (aposta.tipo === 'grupo' && aposta.animalId === grupo.id) return true;
+                // Garantir comparação correta de números (não strings)
+                if (aposta.tipo === 'grupo' && grupo && parseInt(aposta.animalId) === parseInt(grupo.id)) return true;
                 // Garantir que ambos estejam formatados com 2 dígitos para comparação
                 if (aposta.tipo === 'dezena') {
                     const numeroFormatado = formatarNumero(parseInt(aposta.numero) || 0, 2);
@@ -710,11 +711,34 @@ function obterPremiosParaVerificar(colocacao) {
 
 // Verificar grupo (aparece em qualquer um dos prêmios verificados)
 function verificarGrupo(animalId, premios) {
-    const grupo = gruposAnimais.find(g => g.id === animalId);
+    // Verificar se o animalId é válido e converter para número
+    if (animalId === null || animalId === undefined) {
+        return false;
+    }
+    
+    const animalIdNum = parseInt(animalId);
+    if (isNaN(animalIdNum)) {
+        return false;
+    }
+    
+    const grupo = gruposAnimais.find(g => g.id === animalIdNum);
+    
+    // Verificar se o grupo foi encontrado
+    if (!grupo || !grupo.numeros || !Array.isArray(grupo.numeros)) {
+        return false;
+    }
+    
+    // Verificar cada prêmio
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
         const premioFormatado = formatarNumero(premio, 4);
-        const dezena = parseInt(premioFormatado.slice(-2));
-        const numDezena = dezena === 0 ? 0 : dezena;
+        // Pegar os últimos 2 dígitos (a dezena)
+        const dezenaStr = premioFormatado.slice(-2);
+        // Converter para número, tratando "00" como 0
+        const numDezena = dezenaStr === '00' ? 0 : parseInt(dezenaStr);
+        
+        // Verificar se a dezena está no array de números do grupo
         if (grupo.numeros.includes(numDezena)) {
             return true;
         }
