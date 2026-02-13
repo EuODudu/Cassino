@@ -230,27 +230,32 @@ function atualizarInterface() {
     const multiplaSelecao = document.getElementById('multiplaSelecao');
     const multiplaDezena = document.getElementById('multiplaDezena');
     const helpDezenas = document.getElementById('helpDezenas');
+    const dezenasAposta = document.getElementById('dezenasAposta');
     
     // Reset seleções
     animaisSelecionados = [];
     document.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selecionado'));
-    document.getElementById('selecionados').innerHTML = '';
-    if (document.getElementById('dezenasAposta')) {
-        document.getElementById('dezenasAposta').value = '';
+    const selecionadosDiv = document.getElementById('selecionados');
+    if (selecionadosDiv) {
+        selecionadosDiv.innerHTML = '';
+    }
+    if (dezenasAposta) {
+        dezenasAposta.value = '';
     }
     
-    // Esconder todos
-    animaisGrid.style.display = 'none';
-    numeroInput.style.display = 'none';
-    multiplaSelecao.style.display = 'none';
+    // Esconder todos os campos
+    if (animaisGrid) animaisGrid.style.display = 'none';
+    if (numeroInput) numeroInput.style.display = 'none';
+    if (multiplaSelecao) multiplaSelecao.style.display = 'none';
     if (multiplaDezena) multiplaDezena.style.display = 'none';
     
+    // Mostrar o campo apropriado baseado no tipo de aposta
     if (tipoAposta === 'grupo') {
-        animaisGrid.style.display = 'grid';
+        if (animaisGrid) animaisGrid.style.display = 'grid';
     } else if (tipoAposta === 'dezena' || tipoAposta === 'centena' || tipoAposta === 'milhar') {
-        numeroInput.style.display = 'block';
+        if (numeroInput) numeroInput.style.display = 'block';
     } else if (tipoAposta === 'duqueGrupo' || tipoAposta === 'ternGrupo') {
-        multiplaSelecao.style.display = 'block';
+        if (multiplaSelecao) multiplaSelecao.style.display = 'block';
         if (helpDezenas) {
             helpDezenas.textContent = tipoAposta === 'duqueGrupo' ? 'Selecione 2 animais' : 'Selecione 3 animais';
         }
@@ -260,6 +265,8 @@ function atualizarInterface() {
             if (helpDezenas) {
                 helpDezenas.textContent = tipoAposta === 'duqueDezena' ? 'Digite 2 dezenas separadas por vírgula (ex: 01, 02)' : 'Digite 3 dezenas separadas por vírgula (ex: 01, 02, 03)';
             }
+        } else {
+            console.error('Elemento multiplaDezena não encontrado!');
         }
     }
 }
@@ -309,7 +316,17 @@ function fazerAposta() {
             return;
         }
         
-        aposta.numero = numero;
+        // Armazenar número formatado corretamente com zeros à esquerda
+        if (tipoAposta === 'centena') {
+            // Garantir que centena tem 3 dígitos (ex: 123 -> 123, 12 -> 012)
+            aposta.numero = formatarNumero(parseInt(numero), 3);
+        } else if (tipoAposta === 'dezena') {
+            // Garantir que dezena tem 2 dígitos (ex: 5 -> 05)
+            aposta.numero = formatarNumero(parseInt(numero), 2);
+        } else {
+            // Milhar tem 4 dígitos
+            aposta.numero = formatarNumero(parseInt(numero), 4);
+        }
         
         if (tipoAposta === 'dezena') {
             const num = parseInt(numero);
@@ -523,6 +540,11 @@ function verificarApostas() {
             totalGanho += ganho;
             aposta.ganho = ganho;
             aposta.pago = true;
+        } else {
+            // Marcar explicitamente como não ganhou
+            aposta.ganhou = false;
+            aposta.ganho = 0;
+            aposta.pago = false;
         }
     });
     
@@ -660,12 +682,15 @@ function verificarDezena(numero, premios) {
     return false;
 }
 
-// Verificar centena
+// Verificar centena (deve acertar os últimos 3 dígitos)
 function verificarCentena(numero, premios) {
+    // Garantir que o número da aposta tem 3 dígitos
+    const numeroFormatado = formatarNumero(parseInt(numero), 3);
+    
     for (const premio of premios) {
         const premioFormatado = formatarNumero(premio, 4);
-        const centena = premioFormatado.slice(-3);
-        if (centena === numero) {
+        const centena = premioFormatado.slice(-3); // Últimos 3 dígitos
+        if (centena === numeroFormatado) {
             return true;
         }
     }
@@ -782,8 +807,29 @@ function atualizarHistorico() {
             descricao = `Terno de Dezena: ${aposta.dezenas.join(', ')}`;
         }
         
-        const statusClass = aposta.ganhou ? 'ganhou' : resultadoSorteio ? 'perdeu' : 'pendente';
-        const statusText = aposta.ganhou ? `Ganhou R$ ${aposta.ganho.toFixed(2)}` : resultadoSorteio ? 'Perdeu' : 'Pendente';
+        // Verificar corretamente o status da aposta
+        let statusClass, statusText;
+        
+        // Se o sorteio ainda não foi realizado
+        if (!resultadoSorteio) {
+            statusClass = 'pendente';
+            statusText = 'Pendente';
+        }
+        // Se a aposta ganhou (verificado e pago)
+        else if (aposta.ganhou === true && aposta.pago === true && aposta.ganho > 0) {
+            statusClass = 'ganhou';
+            statusText = `Ganhou R$ ${aposta.ganho.toFixed(2)}`;
+        }
+        // Se o sorteio foi realizado mas a aposta não ganhou
+        else if (resultadoSorteio && aposta.ganhou === false) {
+            statusClass = 'perdeu';
+            statusText = 'Perdeu';
+        }
+        // Caso padrão (não deveria acontecer, mas por segurança)
+        else {
+            statusClass = 'pendente';
+            statusText = 'Pendente';
+        }
         
         html += `
             <div class="aposta-item ${statusClass}">
