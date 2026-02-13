@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo do Bicho - Plataforma Digital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Elementos decorativos de cassino no fundo -->
+    <div class="casino-background">
+        <!-- Baralhos -->
+        <div class="decorative-card card-1">
+            <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="90" height="130" rx="8" fill="#ffffff" stroke="#DC143C" stroke-width="2"/>
+                <text x="50" y="75" font-size="40" fill="#DC143C" text-anchor="middle" font-weight="bold">A</text>
+                <text x="50" y="110" font-size="20" fill="#DC143C" text-anchor="middle">♠</text>
+            </svg>
+        </div>
+        <div class="decorative-card card-2">
+            <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="90" height="130" rx="8" fill="#ffffff" stroke="#DC143C" stroke-width="2"/>
+                <text x="50" y="75" font-size="40" fill="#DC143C" text-anchor="middle" font-weight="bold">K</text>
+                <text x="50" y="110" font-size="20" fill="#DC143C" text-anchor="middle">♥</text>
+            </svg>
+        </div>
+        <div class="decorative-card card-3">
+            <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="90" height="130" rx="8" fill="#ffffff" stroke="#DC143C" stroke-width="2"/>
+                <text x="50" y="75" font-size="40" fill="#DC143C" text-anchor="middle" font-weight="bold">Q</text>
+                <text x="50" y="110" font-size="20" fill="#DC143C" text-anchor="middle">♦</text>
+            </svg>
+        </div>
+        
+        <!-- Dados -->
+        <div class="decorative-dice dice-1">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="70" height="70" rx="8" fill="#ffffff" stroke="#FFD700" stroke-width="2"/>
+                <circle cx="25" cy="25" r="4" fill="#0a0a0a"/>
+                <circle cx="55" cy="55" r="4" fill="#0a0a0a"/>
+            </svg>
+        </div>
+        <div class="decorative-dice dice-2">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="70" height="70" rx="8" fill="#ffffff" stroke="#FFD700" stroke-width="2"/>
+                <circle cx="25" cy="25" r="4" fill="#0a0a0a"/>
+                <circle cx="40" cy="40" r="4" fill="#0a0a0a"/>
+                <circle cx="55" cy="55" r="4" fill="#0a0a0a"/>
+            </svg>
+        </div>
+        <div class="decorative-dice dice-3">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="70" height="70" rx="8" fill="#ffffff" stroke="#FFD700" stroke-width="2"/>
+                <circle cx="20" cy="20" r="4" fill="#0a0a0a"/>
+                <circle cx="40" cy="40" r="4" fill="#0a0a0a"/>
+                <circle cx="60" cy="60" r="4" fill="#0a0a0a"/>
+                <circle cx="20" cy="60" r="4" fill="#0a0a0a"/>
+                <circle cx="60" cy="20" r="4" fill="#0a0a0a"/>
+            </svg>
+        </div>
+        
+        <!-- Chips de cassino -->
+        <div class="decorative-chip chip-1">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#FFD700" stroke="#FFA500" stroke-width="3"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#FFA500" stroke-width="2"/>
+                <text x="50" y="55" font-size="24" fill="#0a0a0a" text-anchor="middle" font-weight="bold">$</text>
+            </svg>
+        </div>
+        <div class="decorative-chip chip-2">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#DC143C" stroke="#B22222" stroke-width="3"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#B22222" stroke-width="2"/>
+                <text x="50" y="55" font-size="24" fill="#ffffff" text-anchor="middle" font-weight="bold">$</text>
+            </svg>
+        </div>
+        <div class="decorative-chip chip-3">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#00AA00" stroke="#008800" stroke-width="3"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#008800" stroke-width="2"/>
+                <text x="50" y="55" font-size="24" fill="#ffffff" text-anchor="middle" font-weight="bold">$</text>
+            </svg>
+        </div>
+        
+        <!-- Máquinas Caça-Níqueis -->
+        <div class="decorative-slot slot-1">
+            <svg viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="100" height="160" rx="8" fill="#1a1a1a" stroke="#FFD700" stroke-width="2"/>
+                <rect x="20" y="30" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <circle cx="35" cy="50" r="8" fill="#FFD700"/>
+                <circle cx="60" cy="50" r="8" fill="#FFD700"/>
+                <circle cx="85" cy="50" r="8" fill="#FFD700"/>
+                <rect x="20" y="80" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <text x="60" y="105" font-size="24" fill="#FFD700" text-anchor="middle" font-weight="bold">7</text>
+                <text x="60" y="125" font-size="24" fill="#FFD700" text-anchor="middle" font-weight="bold">7</text>
+                <rect x="20" y="130" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <circle cx="35" cy="150" r="8" fill="#FFD700"/>
+                <circle cx="60" cy="150" r="8" fill="#FFD700"/>
+                <circle cx="85" cy="150" r="8" fill="#FFD700"/>
+            </svg>
+        </div>
+        <div class="decorative-slot slot-2">
+            <svg viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="100" height="160" rx="8" fill="#1a1a1a" stroke="#00AA00" stroke-width="2"/>
+                <rect x="20" y="30" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <text x="60" y="55" font-size="28" fill="#00AA00" text-anchor="middle" font-weight="bold">★</text>
+                <rect x="20" y="80" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <text x="60" y="105" font-size="28" fill="#00AA00" text-anchor="middle" font-weight="bold">★</text>
+                <rect x="20" y="130" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <text x="60" y="155" font-size="28" fill="#00AA00" text-anchor="middle" font-weight="bold">★</text>
+            </svg>
+        </div>
+        <div class="decorative-slot slot-3">
+            <svg viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="100" height="160" rx="8" fill="#1a1a1a" stroke="#DC143C" stroke-width="2"/>
+                <rect x="20" y="30" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <text x="60" y="55" font-size="24" fill="#DC143C" text-anchor="middle" font-weight="bold">BAR</text>
+                <rect x="20" y="80" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <text x="60" y="105" font-size="24" fill="#DC143C" text-anchor="middle" font-weight="bold">BAR</text>
+                <rect x="20" y="130" width="80" height="40" rx="4" fill="#0a0a0a"/>
+                <text x="60" y="155" font-size="24" fill="#DC143C" text-anchor="middle" font-weight="bold">BAR</text>
+            </svg>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header class="header-modern">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1>Jogo do Bicho</h1>
+                    <p class="subtitle">Plataforma Digital</p>
+                </div>
+                <div class="saldo-container">
+                    <div class="saldo-info">
+                        <span class="saldo-label">Saldo Disponível</span>
+                        <span class="saldo-valor" id="saldo">R$ 1.000,00</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Seção de Apostas -->
+            <section class="aposta-section">
+                <div class="section-header">
+                    <h2>Nova Aposta</h2>
+                    <p class="section-subtitle">Selecione o tipo de aposta e configure seus detalhes</p>
+                </div>
+                
+                       <div class="tipo-aposta">
+                           <label>Tipo de Aposta:</label>
+                           <select id="tipoAposta">
+                               <option value="grupo">Grupo (Animal) - Cabeça: 18x | Qualquer: 3.6x</option>
+                               <option value="dezena">Dezena (00-99) - Cabeça: 60x | Qualquer: 12x</option>
+                               <option value="centena">Centena (000-999) - Cabeça: 600x | Qualquer: 120x</option>
+                               <option value="milhar">Milhar (0000-9999) - Cabeça: 4000x | Qualquer: 800x</option>
+                               <option value="duqueGrupo">Duque de Grupo - Paga 18.5x</option>
+                               <option value="duqueDezena">Duque de Dezena - Paga 300x</option>
+                               <option value="ternGrupo">Terno de Grupo - Paga 130x</option>
+                               <option value="ternoDezena">Terno de Dezena - Paga 3000x</option>
+                           </select>
+                       </div>
+
+                <!-- Seleção de Animais -->
+                <div class="animais-grid" id="animaisGrid"></div>
+
+                <!-- Input para números -->
+                <div class="numero-input" id="numeroInput" style="display: none;">
+                    <label>Digite o número:</label>
+                    <input type="text" id="numeroAposta" placeholder="Ex: 87 (dezena), 587 (centena), 4587 (milhar)" maxlength="4">
+                </div>
+
+                <!-- Input para múltiplas dezenas (duque/terno de dezena) -->
+                <div class="multipla-dezena" id="multiplaDezena" style="display: none;">
+                    <label>Digite as dezenas (separadas por vírgula):</label>
+                    <input type="text" id="dezenasAposta" placeholder="Ex: 01, 02, 03 (para terno de dezena) ou 01, 02 (para duque de dezena)">
+                    <p class="help-text" id="helpDezenas"></p>
+                </div>
+
+                <!-- Seleção múltipla para duque/terno de grupo -->
+                <div class="multipla-selecao" id="multiplaSelecao" style="display: none;">
+                    <p>Selecione os animais:</p>
+                    <div class="animais-grid" id="animaisGridMultipla"></div>
+                    <div class="selecionados" id="selecionados"></div>
+                </div>
+
+                <div class="valor-aposta">
+                    <label>Valor da Aposta:</label>
+                    <input type="number" id="valorAposta" min="1" value="10" step="0.01">
+                </div>
+
+                <div class="colocacao">
+                    <label>Colocação:</label>
+                    <select id="colocacao">
+                        <option value="1ao5">1º ao 5º Prêmio</option>
+                        <option value="1">1º Prêmio (Cabeça)</option>
+                        <option value="2">2º Prêmio</option>
+                        <option value="3">3º Prêmio</option>
+                        <option value="4">4º Prêmio</option>
+                        <option value="5">5º Prêmio</option>
+                    </select>
+                </div>
+
+                <button class="btn-apostar" id="btnApostar">
+                    <span>Confirmar Aposta</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </section>
+
+            <!-- Seção de Resultados -->
+            <section class="resultado-section">
+                <div class="section-header">
+                    <h2>Resultado do Sorteio</h2>
+                    <p class="section-subtitle">Visualize os números sorteados e verifique suas apostas</p>
+                </div>
+                <button class="btn-sortear" id="btnSortear">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 2V10M10 18V10M10 10H2M10 10H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>Realizar Sorteio</span>
+                </button>
+                
+                <div class="premios" id="premios"></div>
+                
+                <div class="resultado-animais" id="resultadoAnimais"></div>
+            </section>
+
+            <!-- Histórico de Apostas -->
+            <section class="historico-section">
+                <div class="section-header">
+                    <h2>Histórico de Apostas</h2>
+                    <p class="section-subtitle">Acompanhe todas as suas apostas realizadas</p>
+                </div>
+                <div class="historico" id="historico"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
