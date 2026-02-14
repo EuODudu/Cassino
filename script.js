@@ -546,9 +546,11 @@ function exibirResultados() {
         const numDezena = parseInt(dezena);
         const grupo = encontrarAnimalPorNumero(numDezena);
         
-        // Verificar se algum animal das apostas ganhou
+        // Verificar se algum animal das apostas ganhou (apenas apostas não verificadas)
         const ganhou = apostas.some(aposta => {
-            if (aposta.ganhou || aposta.pago) return false;
+            // Verificar apenas apostas não verificadas ainda
+            if (aposta.verificada) return false;
+            
             const premiosParaVerificar = obterPremiosParaVerificar(aposta.colocacao);
             if (premiosParaVerificar.includes(premio)) {
                 // Garantir comparação correta de números (não strings)
@@ -595,8 +597,9 @@ function verificarApostas() {
     let totalGanho = 0;
     
     apostas.forEach(aposta => {
-        // Pular apostas já verificadas e pagas
-        if (aposta.verificada && aposta.pago) return;
+        // Pular apenas apostas já verificadas (independente de pagas ou não)
+        // Uma aposta verificada já foi processada e não deve ser verificada novamente
+        if (aposta.verificada) return;
         
         let ganhou = false;
         const premiosParaVerificar = obterPremiosParaVerificar(aposta.colocacao);
@@ -610,13 +613,13 @@ function verificarApostas() {
         } else if (aposta.tipo === 'milhar') {
             ganhou = verificarMilhar(aposta.numero, premiosParaVerificar);
         } else if (aposta.tipo === 'duqueGrupo') {
-            ganhou = verificarDuque(aposta.animais, resultadoSorteio);
+            ganhou = verificarDuque(aposta.animais, premiosParaVerificar);
         } else if (aposta.tipo === 'ternGrupo') {
-            ganhou = verificarTerno(aposta.animais, resultadoSorteio);
+            ganhou = verificarTerno(aposta.animais, premiosParaVerificar);
         } else if (aposta.tipo === 'duqueDezena') {
-            ganhou = verificarDuqueDezena(aposta.dezenas, resultadoSorteio);
+            ganhou = verificarDuqueDezena(aposta.dezenas, premiosParaVerificar);
         } else if (aposta.tipo === 'ternoDezena') {
-            ganhou = verificarTernoDezena(aposta.dezenas, resultadoSorteio);
+            ganhou = verificarTernoDezena(aposta.dezenas, premiosParaVerificar);
         }
         
         // Marcar que a aposta foi verificada
@@ -745,6 +748,7 @@ function obterPremiosParaVerificar(colocacao) {
 }
 
 // Verificar grupo (aparece em qualquer um dos prêmios verificados)
+// IMPORTANTE: Deve verificar se o GRUPO do prêmio corresponde ao GRUPO apostado
 function verificarGrupo(animalId, premios) {
     // Verificar se o animalId é válido e converter para número
     if (animalId === null || animalId === undefined) {
@@ -756,10 +760,10 @@ function verificarGrupo(animalId, premios) {
         return false;
     }
     
-    const grupo = gruposAnimais.find(g => g.id === animalIdNum);
+    const grupoApostado = gruposAnimais.find(g => g.id === animalIdNum);
     
     // Verificar se o grupo foi encontrado
-    if (!grupo || !grupo.numeros || !Array.isArray(grupo.numeros)) {
+    if (!grupoApostado || !grupoApostado.numeros || !Array.isArray(grupoApostado.numeros)) {
         return false;
     }
     
@@ -773,8 +777,11 @@ function verificarGrupo(animalId, premios) {
         // Converter para número, tratando "00" como 0
         const numDezena = dezenaStr === '00' ? 0 : parseInt(dezenaStr);
         
-        // Verificar se a dezena está no array de números do grupo
-        if (grupo.numeros.includes(numDezena)) {
+        // Encontrar qual grupo pertence essa dezena
+        const grupoPremio = encontrarAnimalPorNumero(numDezena);
+        
+        // Verificar se o grupo do prêmio é o mesmo grupo apostado
+        if (grupoPremio && grupoPremio.id === animalIdNum) {
             return true;
         }
     }
@@ -829,70 +836,137 @@ function verificarCentena(numero, premios) {
 }
 
 // Verificar milhar
+// IMPORTANTE: Deve acertar exatamente os 4 dígitos do número sorteado
 function verificarMilhar(numero, premios) {
+    // Garantir que o número está formatado com 4 dígitos
+    const numeroFormatado = formatarNumero(parseInt(numero) || 0, 4);
+    
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
         const premioFormatado = formatarNumero(premio, 4);
-        if (premioFormatado === numero) {
+        // Comparar exatamente os 4 dígitos
+        if (premioFormatado === numeroFormatado) {
             return true;
         }
     }
     return false;
 }
 
-// Verificar duque
+// Verificar duque de grupo
+// IMPORTANTE: Deve verificar se EXATAMENTE os 2 animais apostados aparecem nos prêmios
 function verificarDuque(animais, premios) {
+    // Verificar se foram apostados exatamente 2 animais
+    if (!animais || animais.length !== 2) {
+        return false;
+    }
+    
+    const idsAnimaisApostados = new Set(animais.map(a => a.id));
     const animaisEncontrados = new Set();
+    
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
         const premioFormatado = formatarNumero(premio, 4);
-        const dezena = parseInt(premioFormatado.slice(-2));
-        const numDezena = dezena === 0 ? 0 : dezena;
+        const dezenaStr = premioFormatado.slice(-2);
+        const numDezena = dezenaStr === '00' ? 0 : parseInt(dezenaStr);
         const grupo = encontrarAnimalPorNumero(numDezena);
-        if (grupo && animais.some(a => a.id === grupo.id)) {
+        
+        // Verificar se o grupo encontrado está entre os animais apostados
+        if (grupo && idsAnimaisApostados.has(grupo.id)) {
             animaisEncontrados.add(grupo.id);
         }
     }
-    return animaisEncontrados.size >= 2;
+    
+    // Deve encontrar exatamente os 2 animais apostados
+    return animaisEncontrados.size === 2;
 }
 
-// Verificar terno
+// Verificar terno de grupo
+// IMPORTANTE: Deve verificar se EXATAMENTE os 3 animais apostados aparecem nos prêmios
 function verificarTerno(animais, premios) {
+    // Verificar se foram apostados exatamente 3 animais
+    if (!animais || animais.length !== 3) {
+        return false;
+    }
+    
+    const idsAnimaisApostados = new Set(animais.map(a => a.id));
     const animaisEncontrados = new Set();
+    
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
         const premioFormatado = formatarNumero(premio, 4);
-        const dezena = parseInt(premioFormatado.slice(-2));
-        const numDezena = dezena === 0 ? 0 : dezena;
+        const dezenaStr = premioFormatado.slice(-2);
+        const numDezena = dezenaStr === '00' ? 0 : parseInt(dezenaStr);
         const grupo = encontrarAnimalPorNumero(numDezena);
-        if (grupo && animais.some(a => a.id === grupo.id)) {
+        
+        // Verificar se o grupo encontrado está entre os animais apostados
+        if (grupo && idsAnimaisApostados.has(grupo.id)) {
             animaisEncontrados.add(grupo.id);
         }
     }
-    return animaisEncontrados.size >= 3;
+    
+    // Deve encontrar exatamente os 3 animais apostados
+    return animaisEncontrados.size === 3;
 }
 
 // Verificar duque de dezena
+// IMPORTANTE: Deve verificar se EXATAMENTE as 2 dezenas apostadas aparecem nos prêmios
 function verificarDuqueDezena(dezenas, premios) {
+    // Verificar se foram apostadas exatamente 2 dezenas
+    if (!dezenas || dezenas.length !== 2) {
+        return false;
+    }
+    
+    // Garantir que as dezenas estão formatadas com 2 dígitos
+    const dezenasFormatadas = dezenas.map(d => formatarNumero(parseInt(d) || 0, 2));
+    const dezenasApostadas = new Set(dezenasFormatadas);
     const dezenasEncontradas = new Set();
+    
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
         const premioFormatado = formatarNumero(premio, 4);
-        const dezena = premioFormatado.slice(-2);
-        if (dezenas.includes(dezena)) {
-            dezenasEncontradas.add(dezena);
+        const dezenaPremio = premioFormatado.slice(-2);
+        
+        // Verificar se a dezena do prêmio está entre as dezenas apostadas
+        if (dezenasApostadas.has(dezenaPremio)) {
+            dezenasEncontradas.add(dezenaPremio);
         }
     }
-    return dezenasEncontradas.size >= 2;
+    
+    // Deve encontrar exatamente as 2 dezenas apostadas
+    return dezenasEncontradas.size === 2;
 }
 
 // Verificar terno de dezena
+// IMPORTANTE: Deve verificar se EXATAMENTE as 3 dezenas apostadas aparecem nos prêmios
 function verificarTernoDezena(dezenas, premios) {
+    // Verificar se foram apostadas exatamente 3 dezenas
+    if (!dezenas || dezenas.length !== 3) {
+        return false;
+    }
+    
+    // Garantir que as dezenas estão formatadas com 2 dígitos
+    const dezenasFormatadas = dezenas.map(d => formatarNumero(parseInt(d) || 0, 2));
+    const dezenasApostadas = new Set(dezenasFormatadas);
     const dezenasEncontradas = new Set();
+    
     for (const premio of premios) {
+        if (premio === null || premio === undefined) continue;
+        
         const premioFormatado = formatarNumero(premio, 4);
-        const dezena = premioFormatado.slice(-2);
-        if (dezenas.includes(dezena)) {
-            dezenasEncontradas.add(dezena);
+        const dezenaPremio = premioFormatado.slice(-2);
+        
+        // Verificar se a dezena do prêmio está entre as dezenas apostadas
+        if (dezenasApostadas.has(dezenaPremio)) {
+            dezenasEncontradas.add(dezenaPremio);
         }
     }
-    return dezenasEncontradas.size >= 3;
+    
+    // Deve encontrar exatamente as 3 dezenas apostadas
+    return dezenasEncontradas.size === 3;
 }
 
 // Atualizar saldo
